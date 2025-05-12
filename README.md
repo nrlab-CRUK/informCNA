@@ -1,4 +1,4 @@
-# Tumor_infored-CNA
+# informCNA
 
 A pipeline for tumor-informed copy number analysis.
 
@@ -12,7 +12,7 @@ pip install -r requirements.txt
 http://hgdownload.cse.ucsc.edu/gbdb/hg38/bbi/gc5BaseBw/gc5Base.bw
 
 ## Usage
-[workflow](./workflow.png)
+![workflow](./workflow.png)
 
 
 ### Reads counting
