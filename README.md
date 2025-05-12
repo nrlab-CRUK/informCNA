@@ -15,12 +15,12 @@ http://hgdownload.cse.ucsc.edu/gbdb/hg38/bbi/gc5BaseBw/gc5Base.bw
 ![workflow](./workflow.png)
 
 
-### Reads counting
+### Reads counting (cov.py)
 ```
 python cov.py /path/to/GRCh38.mappable_region.repli_time.bed.gz /path/to/gc5Base.bw /path/to/GRCh38.mappable_region.repli_time.bed.gz /path/to/BAM_file /path/to/count.txt.gz
 ```
 
-### Segmentation
+### Segmentation (seg.py)
 ```
 python seg.py /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
@@ -30,7 +30,7 @@ python seg.py --high /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
 The output of
 
-### Comparison
+### Comparison (cmp.py)
 To compare reference and query seg.txt.gz files
 ```
 python cmp.py /path/to/ref_seg.txt.gz /path/to/qry_seg.txt.gz /path/to/cmp_result.txt
