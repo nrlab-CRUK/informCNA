@@ -1,0 +1,11 @@
+cvxpy
+matplotlib
+numpy
+pandas
+pickle
+pyBigWig
+pysam
+ruptures
+scipy
+scikit_posthocs
+scikit-learn
