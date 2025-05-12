@@ -11,6 +11,9 @@ pip install -r requirements.txt
 ### Download GC content for hg38 from the UCSC Genome Browser
 http://hgdownload.cse.ucsc.edu/gbdb/hg38/bbi/gc5BaseBw/gc5Base.bw
 
+### Download mappability and replication timing for hg38 from google drive
+https://drive.google.com/drive/folders/1vlao_MCuiBMXffIQMV2SQz2VYvCaXLYh?usp=share_link
+
 ## Usage
 ![workflow](./workflow.png)
 
