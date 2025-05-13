@@ -1,6 +1,6 @@
 # informCNA
 
-A pipeline for tumor-informed copy number analysis.
+A tumor-informed cfDNA copy number analysis method.
 
 ## Installation
 ### Install Python dependencies
