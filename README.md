@@ -31,7 +31,6 @@ For tumor samples, include the `--high` parameter:
 ```
 python seg.py --high /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
-The output of
 
 ### Comparison (cmp.py)
 To compare reference and query seg.txt.gz files
