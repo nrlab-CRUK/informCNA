@@ -33,7 +33,7 @@ python seg.py --high /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
 
 ### Comparison (cmp.py)
-To compare reference and query seg.txt.gz files
+To compare reference and query seg.txt.gz files (both Copy Number Similarity Analysis and Copy Number Significance Analysis)
 ```
 python cmp.py /path/to/ref_seg.txt.gz /path/to/qry_seg.txt.gz /path/to/cmp_result.txt
 ```
@@ -62,7 +62,7 @@ p-values of comparing upper and lower triangles (PU−L)
 - **Query Sample:**
     The tumor fraction of the query sample can be calculated as:
     ```
-    Tumor fraction of reference sample × similarity score
+    Tumor fraction of reference sample × Similarity Score
     ```
     The tumor positivity of the query sample can be determined using an SVM model:
     ```
