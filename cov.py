@@ -58,8 +58,6 @@ def get_gc_map_cov(arg):
 						read.mapping_quality < MAPQ or \
 						(not read.is_proper_pair):
 					continue
-				if read.has_tag('ZP') and read.get_tag('ZP') != 1:
-					continue
 				size = abs(read.template_length)
 				if not minSize <= size <= maxSize:
 					continue
