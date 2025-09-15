@@ -58,6 +58,7 @@ p-values of comparing upper and lower triangles (PU−L)
   - [ACE](https://github.com/tgac-vumc/ACE)
   - [ichorCNA](https://github.com/broadinstitute/ichorCNA)
   - [Rascal](https://github.com/crukci-bioinformatics/rascal)
+
 By default, ichorCNA, ACE, and Rascal estimate TFs above 3%, 5%, and 20%, respectively. We recommend that users ensure the reference sample has an adequate TF before applying informCNA.
 
 - **Query Sample:**
