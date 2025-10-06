@@ -59,7 +59,7 @@ p-values of comparing upper and lower triangles (PU−L)
   - [ichorCNA](https://github.com/broadinstitute/ichorCNA)
   - [Rascal](https://github.com/crukci-bioinformatics/rascal)
 
-By default, ichorCNA, ACE, and Rascal estimate TFs above 3%, 5%, and 20%, respectively. We recommend that users ensure the reference sample has an adequate TF before applying informCNA.
+By default, ichorCNA, ACE, and Rascal estimate TFs above 3%, 5%, and 20%, respectively. Before applying informCNA, we recommend ensuring that the reference sample has a sufficient TF and contains detectable CNA segment(s) identifiable by any tumor-naïve assay.
 
 - **Query Sample:**
     The tumor fraction of the query sample can be calculated as:
