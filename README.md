@@ -41,7 +41,7 @@ python cmp.py /path/to/ref_seg.txt.gz /path/to/qry_seg.txt.gz /path/to/cmp_resul
 ### Output Format
 The output is a one-line result in the following format:
 ```
-Simlairy Socre,
+Simlairy Score,
 Kendall’s tau in correlation analysis,
 the associated p-value,
 median p-value of upper triangle in segment pairwise comparison matrix,
