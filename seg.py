@@ -28,12 +28,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 mpl.use('Agg')
 
-try:
-	sys.path.append('/home/zhou01/python_module')
-	import plot_graph
-	plot_graph.font_Arial()
-except ImportError:
-	pass
 
 BIN_SIZE = 100 * 10**3  # same as cov.py
 STEP_SIZE = int(BIN_SIZE/10)  # same as cov.py
