@@ -23,13 +23,6 @@ import matplotlib.backends.backend_pdf as pdf
 from matplotlib import cm, colors
 mpl.use('Agg')
 
-try:
-	sys.path.append('/home/zhou01/python_module')
-	import plot_graph
-	plot_graph.font_Arial()
-except ImportError:
-	pass
-
 L1_penalty = 50
 
 
