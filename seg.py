@@ -284,7 +284,7 @@ if __name__ == "__main__":
 	parser.add_argument('output_file')
 	#parser.add_argument('--pon', help='Panal of normals txt.gz file')
 	parser.add_argument('--low', help='Low tumour fraction sample', action=argparse.BooleanOptionalAction)
-	parser.set_defaults(low=True)
+	parser.set_defaults(low=False)
 	parser.set_defaults(pon=False)
 	args = parser.parse_args()
 	if args.low:
