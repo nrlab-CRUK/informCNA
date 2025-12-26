@@ -27,9 +27,9 @@ python cov.py /path/to/GRCh38.mappable_region.repli_time.bed.gz /path/to/gc5Base
 ```
 python seg.py /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
-For low–tumor-fraction samples, use --low parameter to enable more sensitive segmentation.
+For high–tumor-fraction reference samples, use --high parameter.
 ```
-python seg.py --low /path/to/count.txt.gz /path/to/seg.txt.gz
+python seg.py --high /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
 
 ### Comparison (cmp.py)
