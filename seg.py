@@ -227,7 +227,7 @@ def plot_genome(df, chr_bkps, chr_typ, output_file, values2=None):
 
 def determine_seg_type(df, segments_coor, segments_median, segments_len, segments_mean, tot_bkps):
 	segments_len, segments_median = np.array(segments_len), np.array(segments_median)
-	if not args.low:  # high tumor fraction
+	if args.high:  # high tumor fraction
 		seg_info = np.column_stack((segments_median, segments_mean))
 		cluster = DBSCAN(eps=0.03, min_samples=2).fit_predict(seg_info)
 	else:  # low tumor fraction
@@ -283,12 +283,12 @@ if __name__ == "__main__":
 	parser.add_argument('copy_number_file')
 	parser.add_argument('output_file')
 	#parser.add_argument('--pon', help='Panal of normals txt.gz file')
-	parser.add_argument('--low', help='Low tumour fraction sample', action=argparse.BooleanOptionalAction)
-	parser.set_defaults(low=False)
+	parser.add_argument('--high', help='High tumour fraction sample', action=argparse.BooleanOptionalAction)
+	parser.set_defaults(high=False)
 	parser.set_defaults(pon=False)
 	args = parser.parse_args()
-	if args.low:
-		print('->Low tumour fraction mode')
+	if args.high:
+		print('->High tumour fraction mode')
 	else:
 		print('->Generic mode')
 
@@ -375,7 +375,7 @@ if __name__ == "__main__":
 		signal = df[df['chromosome'] == chrom]['log2_cor_gc_map_repli'].values
 		coor = df[df['chromosome'] == chrom]['start'].values
 		std = np.std(signal)
-		pen_bic = 10 * np.log(len(signal))*std if not args.low else 5 * np.log(len(signal))*std
+		pen_bic = 10 * np.log(len(signal))*std if args.high else 5 * np.log(len(signal))*std
 		# Linearly penalized segmentation (Pelt) l2
 		algo = rpt.KernelCPD(
 				kernel='linear',
@@ -405,7 +405,7 @@ if __name__ == "__main__":
 	# determine gain/loss/neutral
 	chr_typ = determine_seg_type(df, segments_coor, segments_median, segments_len, segments_mean, tot_bkps)
 
-	if not args.low:  # recalibration for high tumour fraction sample
+	if args.high:  # recalibration for high tumour fraction sample
 		df['log2_cor_gc_map_repli'] -= get_neutral_median(df, chr_bkps, chr_typ)
 
 	# plot genome copy number per chromosome
