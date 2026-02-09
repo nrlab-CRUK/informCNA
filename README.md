@@ -2,6 +2,9 @@
 
 A tumor-informed cfDNA copy number analysis method.
 
+## License
+See the [LICENSE](LICENSE.txt) file for license rights and limitations.
+
 ## Installation
 ### Install Python dependencies
 ```
