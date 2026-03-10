@@ -23,7 +23,7 @@ https://drive.google.com/drive/folders/1vlao_MCuiBMXffIQMV2SQz2VYvCaXLYh?usp=sha
 
 ### Reads counting (cov.py)
 ```
-python cov.py /path/to/GRCh38.mappable_region.repli_time.bed.gz /path/to/gc5Base.bw /path/to/GRCh38.mappable_region.repli_time.bed.gz /path/to/BAM_file /path/to/count.txt.gz
+python cov.py /path/to/GRCh38.mappable_region.repli_time.bed.gz /path/to/gc5Base.bw /path/to/GRCh38.d1.vd1.k100.genmap.bw /path/to/BAM_file /path/to/count.txt.gz
 ```
 
 ### Segmentation (seg.py)
