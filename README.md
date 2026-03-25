@@ -1,6 +1,14 @@
 # informCNA
 
-A tumor-informed cfDNA copy number analysis method.
+informCNA is a tumor-informed copy number aberration analysis method for detecting ctDNA and quantifying tumor fraction using sWGS of plasma cfDNA.
+
+- informCNA shows ability to detect ctDNA down to 0.2% tumor fraction.
+
+- In patients with ovarian cancer, informCNA identified recurrence a median of 3.7 months earlier than the CA-125 test.
+
+- informCNA can be guided by baseline plasma samples to monitor ctDNA in a plasma-only mode.
+
+Zhou, Z., Cutts, R., Hrebien, S. et al. ctDNA monitoring using tumor-informed copy number analysis. EMBO Mol Med (2026). https://doi.org/10.1038/s44321-026-00399-4
 
 ## License
 See the [LICENSE](LICENSE.txt) file for license rights and limitations.
