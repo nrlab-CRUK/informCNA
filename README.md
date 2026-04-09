@@ -30,11 +30,13 @@ https://drive.google.com/drive/folders/1vlao_MCuiBMXffIQMV2SQz2VYvCaXLYh?usp=sha
 
 
 ### Reads counting (cov.py)
+Takes a BAM file as input and produces ```count.txt.gz``` as output.
 ```
 python cov.py /path/to/GRCh38.mappable_region.repli_time.bed.gz /path/to/gc5Base.bw /path/to/GRCh38.d1.vd1.k100.genmap.bw /path/to/BAM_file /path/to/count.txt.gz
 ```
 
 ### Segmentation (seg.py)
+Takes a ```count.txt.gz``` as input and produces ```seg.txt.gz```  as output.
 ```
 python seg.py /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
