@@ -46,7 +46,7 @@ python seg.py --high /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
 
 ### Comparison (cmp.py)
-To compare reference and query seg.txt.gz files (both Copy Number Similarity Analysis and Copy Number Significance Analysis)
+To compare reference and query ```seg.txt.gz``` files (both Copy Number Similarity Analysis and Copy Number Significance Analysis)
 ```
 python cmp.py /path/to/ref_seg.txt.gz /path/to/qry_seg.txt.gz /path/to/cmp_result.txt
 ```
