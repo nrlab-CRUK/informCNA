@@ -246,21 +246,6 @@ def determine_seg_type(df, segments_coor, segments_median, segments_len, chr_bkp
 	return chr_typ, neutral_median
 
 
-def get_neutral_median(df, chr_bkps, chr_typ):
-	neutral_bins = None
-	for chrom in sorted(set(df['chromosome'].values)):
-			if not chrom[3:].isdigit():  # autosome
-				continue
-			values = df[df['chromosome'] == chrom]['log2_cor_gc_map_repli'].values
-			prev_b = 0
-			for b, typ in zip(chr_bkps[chrom], chr_typ[chrom]):
-				val = values[prev_b: b]
-				if typ == 'neutral':
-					neutral_bins = val if neutral_bins is None else np.concatenate((neutral_bins, val))
-				prev_b = b
-	return np.median(neutral_bins)
-
-
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(
 		prog='seg.py',
