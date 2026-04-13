@@ -21,7 +21,7 @@ from scipy.signal import find_peaks
 from scipy.stats import gaussian_kde
 from sklearn.base import TransformerMixin
 from sklearn.pipeline import make_pipeline
-from sklearn.cluster import HDBSCAN
+from sklearn.cluster import DBSCAN
 from sklearn.linear_model import HuberRegressor, LinearRegression
 
 import matplotlib as mpl
@@ -223,11 +223,14 @@ def determine_seg_type(df, segments_coor, segments_median, segments_len, chr_bkp
 	seg1_neu = np.array([len(chr_bkps[chrom])==1 for chrom, pos in segments_coor])  # assume chromosomes with 1 seg are neutral
 	segments_len, segments_median = np.array(segments_len), np.array(segments_median)
 	seg_info = np.reshape(segments_median, (-1, 1))
-	cluster = HDBSCAN(min_samples=2).fit_predict(seg_info)
-	cluster_idx = list(range(max(cluster)))
-	cluster_len = [np.sum(segments_len[cluster == i]) for i in cluster_idx]
-	neutral_idx = np.argmax(cluster_len)
-	neutral_cluster = (cluster==neutral_idx) | seg1_neu
+	cluster = DBSCAN(eps=0.03, min_samples=2).fit_predict(seg_info)
+	if len(set(cluster)) == 1:  # outliers
+		neutral_cluster = seg1_neu
+	else:
+		cluster_idx = list(range(max(cluster)))
+		cluster_len = [np.sum(segments_len[cluster == i]) for i in cluster_idx]
+		neutral_idx = np.argmax(cluster_len)
+		neutral_cluster = (cluster==neutral_idx) | seg1_neu
 	neutral_median = np.median(segments_median[neutral_cluster])
 
 	chr_typ = {}
