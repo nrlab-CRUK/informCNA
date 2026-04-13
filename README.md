@@ -40,7 +40,7 @@ Takes a ```count.txt.gz``` as input and produces ```seg.txt.gz```  as output.
 ```
 python seg.py /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
-For high–tumor-fraction reference samples, use --high parameter.
+For high tumor-fraction samples (e.g., tissue biopsies), use the ```--high``` parameter to improve robustness against random noise during segmentation.
 ```
 python seg.py --high /path/to/count.txt.gz /path/to/seg.txt.gz
 ```
