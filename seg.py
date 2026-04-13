@@ -21,7 +21,7 @@ from scipy.signal import find_peaks
 from scipy.stats import gaussian_kde
 from sklearn.base import TransformerMixin
 from sklearn.pipeline import make_pipeline
-from sklearn.cluster import DBSCAN, HDBSCAN
+from sklearn.cluster import HDBSCAN
 from sklearn.linear_model import HuberRegressor, LinearRegression
 
 import matplotlib as mpl
@@ -101,10 +101,6 @@ def correction(xmin, xmax, X, y, n_knots=10, degree=3, epsilon=1.35):
 	peak_densities = density[peaks]
 	peak_points = y_grid[peaks]
 	max_density_idx = np.argmax(peak_densities)
-	#if len(peaks) > 2 and max_density_idx == 0:  # aviod edge
-	#	max_density_idx = np.argmax(peak_densities[1:])
-	#elif len(peaks) > 2 and max_density_idx == len(peak_densities)-1:
-	#	max_density_idx = np.argmax(peak_densities[:-1])
 	y_cen = peak_points[max_density_idx]
 	if len(peaks) > 1:  # CNA
 		y_low, y_up = y_cen-0.5, y_cen+0.5
@@ -115,8 +111,6 @@ def correction(xmin, xmax, X, y, n_knots=10, degree=3, epsilon=1.35):
 				y_low = max((point+y_cen)/2 , y_low)
 		s_X = X[(y_low < y_1) & (y_1 < y_up)]
 		s_y = y[(y_low < y_1) & (y_1 < y_up)]
-		#print(peak_points, y_cen, peak_densities)
-		#print(y_low, '--', y_up, len(s_y)/len(y))
 		model.fit(s_X, s_y)
 	else:
 		model.fit(X, y)
@@ -225,30 +219,21 @@ def plot_genome(df, chr_bkps, chr_typ, output_file, values2=None):
 	fig.savefig(output_file[:-7]+'.png')
 
 
-def determine_seg_type(df, segments_coor, segments_median, segments_len, segments_mean, tot_bkps):
+def determine_seg_type(df, segments_coor, segments_median, segments_len, chr_bkps, tot_bkps):
+	seg1_neu = np.array([len(chr_bkps[chrom])==1 for chrom, pos in segments_coor])  # assume chromosomes with 1 seg are neutral
 	segments_len, segments_median = np.array(segments_len), np.array(segments_median)
-	if args.high:  # high tumor fraction
-		seg_info = np.column_stack((segments_median, segments_mean))
-		cluster = DBSCAN(eps=0.03, min_samples=2).fit_predict(seg_info)
-	else:  # low tumor fraction
-		#print(segments_median)
-		seg_info = np.reshape(segments_median, (-1, 1))
-		cluster = HDBSCAN(min_samples=2).fit_predict(seg_info)
-	if len(set(cluster)) == 1:  # -1 outliers
-		neutral_cluster = cluster[0]
-		neutral_median = 0
-	else:
-		cluster_idx = list(range(max(cluster)))
-		cluster_len = [np.sum(segments_len[cluster == i]) for i in cluster_idx]
-		neutral_idx = np.argmax(cluster_len)
-		cluster_median = [np.median(segments_median[cluster == i]) for i in cluster_idx]
-		neutral_cluster = cluster_idx[neutral_idx]
-		neutral_median = cluster_median[neutral_idx]
+	seg_info = np.reshape(segments_median, (-1, 1))
+	cluster = HDBSCAN(min_samples=2).fit_predict(seg_info)
+	cluster_idx = list(range(max(cluster)))
+	cluster_len = [np.sum(segments_len[cluster == i]) for i in cluster_idx]
+	neutral_idx = np.argmax(cluster_len)
+	neutral_cluster = (cluster==neutral_idx) | seg1_neu
+	neutral_median = np.median(segments_median[neutral_cluster])
 
 	chr_typ = {}
-	for (chrom, pos), val, cls, (p_bkp, bkp) in \
-			zip(segments_coor, segments_median, cluster, tot_bkps):
-		if cls == neutral_cluster and neutral_cluster != -1:
+	for (chrom, pos), val, neu_cls, (p_bkp, bkp) in \
+			zip(segments_coor, segments_median, neutral_cluster, tot_bkps):
+		if neu_cls:
 			typ = 'neutral'
 		elif val < neutral_median:
 			typ = 'loss'
@@ -258,7 +243,7 @@ def determine_seg_type(df, segments_coor, segments_median, segments_len, segment
 			raise ValueError()
 		chr_typ.setdefault(chrom, [])
 		chr_typ[chrom].append(typ)
-	return chr_typ
+	return chr_typ, neutral_median
 
 
 def get_neutral_median(df, chr_bkps, chr_typ):
@@ -370,7 +355,7 @@ if __name__ == "__main__":
 	plot_correction(df, gc_model, map_model, repli_model, args.output_file)
 
 	# segmentation
-	segments_median, segments_mean, segments_coor, segments_len, tot_bkps, chr_bkps = [], [], [], [], [], {}
+	segments_median, segments_coor, segments_len, tot_bkps, chr_bkps = [], [], [], [], {}
 	for chrom in sorted(set(df['chromosome'].values)):
 		signal = df[df['chromosome'] == chrom]['log2_cor_gc_map_repli'].values
 		coor = df[df['chromosome'] == chrom]['start'].values
@@ -397,16 +382,13 @@ if __name__ == "__main__":
 			df.loc[row_index[p_bkp: bkp], 'segment'] = i
 			segments_coor.append((chrom, df.loc[row_index[p_bkp], 'start']))
 			segments_median.append(np.median(df.loc[row_index[p_bkp: bkp], 'log2_cor_gc_map_repli'].values))
-			segments_mean.append(np.mean(df.loc[row_index[p_bkp: bkp], 'log2_cor_gc_map_repli'].values))
 			tot_bkps.append((p_bkp, bkp))
 			segments_len.append(bkp-p_bkp)
 			p_bkp = bkp
 
 	# determine gain/loss/neutral
-	chr_typ = determine_seg_type(df, segments_coor, segments_median, segments_len, segments_mean, tot_bkps)
-
-	if args.high:  # recalibration for high tumour fraction sample
-		df['log2_cor_gc_map_repli'] -= get_neutral_median(df, chr_bkps, chr_typ)
+	chr_typ, neutral_median = determine_seg_type(df, segments_coor, segments_median, segments_len, chr_bkps, tot_bkps)
+	df['log2_cor_gc_map_repli'] -= neutral_median 
 
 	# plot genome copy number per chromosome
 	plot_genome(
