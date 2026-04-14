@@ -75,6 +75,7 @@ def load_data(seg_file1, seg_file2):
 def plot_matrix(matrix, coors, seg_lens, meds_ref, meds_qry, leg_strs):
 	# -log10 convert p-value
 	if np.min(matrix) == 0:
+		matrix = matrix.copy()
 		matrix += np.min(matrix[matrix > 0])
 	matrix = -np.log10(matrix)
 	mat_min, mat_max = matrix.min(), matrix.max()
