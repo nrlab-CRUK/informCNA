@@ -227,7 +227,7 @@ def determine_seg_type(df, segments_coor, segments_median, segments_len, chr_bkp
 	if len(set(cluster)) == 1:  # outliers
 		neutral_cluster = seg1_neu
 	else:
-		cluster_idx = list(range(max(cluster)))
+		cluster_idx = list(set(cluster))
 		cluster_len = [np.sum(segments_len[cluster == i]) for i in cluster_idx]
 		neutral_idx = np.argmax(cluster_len)
 		neutral_cluster = (cluster==neutral_idx) | seg1_neu
